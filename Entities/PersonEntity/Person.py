@@ -3,8 +3,9 @@ from . import UtilityFunctions
 from . import Data
 
 class person(object):
-    def __init__(self): #first_name="", last_name="", gender="", iq=0, beauty=0, leadership=0
+    def __init__(self, id): #first_name="", last_name="", gender="", iq=0, beauty=0, leadership=0
         #Setting up the variables with attributes of the characters
+        self.id = id
         self.last_name = UtilityFunctions.chooseRandomItemInArray(Data.last_name_list)
         Data.last_name_list.remove(self.last_name)
         self.gender = UtilityFunctions.chooseRandomItemInArray(Data.genders) #genders are needed for reproduction

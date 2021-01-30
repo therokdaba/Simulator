@@ -2,6 +2,6 @@ from Entities import Entities
 
 if __name__ == "__main__":
     world = Entities.entities()
-    first_entity = world.addEntity()
-    second_entity = world.addEntity()
+    for i in range(6):
+        world.addEntity()
     world.listEntities()
