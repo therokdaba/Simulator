@@ -1,5 +1,6 @@
-from Entities import Person
+from Entities.Person import Person
 
 if __name__ == "__main__":
-    first_person = Person.person("Rokhaya", "Fall", "female", "200", "100", "500") 
-    second_person = Person.person("Michael", "Cordero", "male", "150", "80", "250")   
+    first_person = Person.person()
+    second_person = Person.person()
+    people = Person.person()
