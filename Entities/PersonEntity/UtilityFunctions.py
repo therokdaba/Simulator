@@ -22,3 +22,6 @@ def generateRandomIQ():
 
 def generateRandomStatValue(number):
     return random.randint(0, number)
+
+# def returnRandomPerson(entity_list):
+#     return entity_list[random.randint(0,len(entity_list)-1)]
