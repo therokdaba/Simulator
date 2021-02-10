@@ -1,6 +1,7 @@
 from . import Family
 from . import UtilityFunctions
 from . import Data
+import copy 
 
 class person(object):
     def __init__(self, id, last_name): #first_name="", last_name="", gender="", iq=0, beauty=0, leadership=0
@@ -29,26 +30,45 @@ class person(object):
     
     def reproductionProcess(self, world):#TODO change this to adapt it to couple
         partner = self.findPartner(world) #TODO move the process of finding a partner to another function
-        self.childCreation(partner, world)
+        if partner != False:
+            self.childCreation(partner, world)
 
     def findPartner(self, world):#world is passed through to help us access all entities
-        partner = UtilityFunctions.chooseRandomItemInArray(world.entities_members)
-        while self.gender == partner.gender: #TODO check if we can change that into a do while
-            partner = UtilityFunctions.chooseRandomItemInArray(world.entities_members)
-        print("Partner found..." + partner.first_name + " " + partner.last_name + " for " + self.first_name + " " + self.last_name + ".")
+        partner_list = copy.deepcopy(world.entities_members)
+        partner = UtilityFunctions.chooseRandomItemInArray(partner_list)
+        partner_list.remove(partner)
+        while (self.gender == partner.gender or not self.partnerCompatibilityTest(partner)) and len(partner_list) > 0: #no need to check that partner is not self because we are making sure that the gender between two partners is different 
+            partner = UtilityFunctions.chooseRandomItemInArray(partner_list)
+            partner_list.remove(partner)
+        if len(partner_list) <= 0:
+            print("No partner available!")
+            return False
+        print("Partner found... " + partner.first_name + " " + partner.last_name + " for " + self.first_name + " " + self.last_name + ".")
         couple_last_name = ""
         #changing last name of the wife and create family
         if self.gender == "female":
             self.last_name = partner.last_name
             couple_last_name = partner.last_name
             partner.family.addMember(self.id)
+            del(self.family)
         else:
             partner.last_name = self.last_name
             couple_last_name = self.last_name
             self.family.addMember(partner.id)
-        #TODO delete the wifes family, research how to delete an object
+            del(partner.family)
+        print("Family of " + partner.first_name + " " + partner.last_name + " deleted...")
         print("They are married and now called " + self.first_name + " and " + partner.first_name + " " + couple_last_name + ".") #TODO add married status in a person attribute
         return partner
+
+    def partnerCompatibilityTest(self, partner):
+        compatibility = self.beauty - partner.beauty
+        print("Compatibility for " + self.first_name + " " + self.last_name + " and " + partner.first_name + " " + partner.last_name + ": " + str(compatibility))
+        if compatibility <= 0 and compatibility >= -30:
+            return True
+        elif compatibility <= 30:
+            return True
+        else:
+            return False
 
     def childCreation(self, partner, world): #spawns a child and adds it to the family
         if self.gender == "male":
@@ -57,7 +77,7 @@ class person(object):
         elif partner.gender == "male":
             main_parent = partner
             other_parent = self 
-        world.addEntity(main_parent.last_name) #Add a way to append "Jr." to the kid's first name if they have the as their parent
+        world.addEntity(main_parent.last_name) #TODO Add a way to append "Jr." to the kid's first name if they have the as their parent
         kid = world.entities_members[len(world.entities_members)-1]
         main_parent.family.addMember(kid.id)
         print(kid.first_name + " is in the " + kid.last_name + " family and " + kid.pronoun[1] + " dad is " + main_parent.first_name + " and " + kid.pronoun[1] + " mom is " + other_parent.first_name + ".")

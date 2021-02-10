@@ -1,6 +1,7 @@
 from Entities.PersonEntity import Person
 from Entities.PersonEntity import UtilityFunctions
 from Entities.PersonEntity import Data
+
 class entities(object):
     def __init__(self, *kwargs):
         self.entities_members = []
