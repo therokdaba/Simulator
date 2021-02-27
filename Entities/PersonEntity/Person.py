@@ -47,26 +47,25 @@ class person(object):
         couple_last_name = ""
         #changing last name of the wife and create family
         if self.gender == "female":
-            self.last_name = partner.last_name
+            del(world.entities_members[self.id].family)
+            print("Family of " + self.first_name + " " + self.last_name + " deleted...")
+            world.entities_members[self.id].last_name = partner.last_name
             couple_last_name = partner.last_name
             partner.family.addMember(self.id)
-            del(self.family)
         else:
-            partner.last_name = self.last_name
+            del(world.entities_members[partner.id].family)
+            print("Family of " + partner.first_name + " " + partner.last_name + " deleted...")
+            world.entities_members[partner.id].last_name = self.last_name
             couple_last_name = self.last_name
-            self.family.addMember(partner.id)
-            del(partner.family)
-        print("Family of " + partner.first_name + " " + partner.last_name + " deleted...")
-        print("They are married and now called " + self.first_name + " and " + partner.first_name + " " + couple_last_name + ".") #TODO add married status in a person attribute
+            world.entities_members[self.id].family.addMember(partner.id)
+        print("They are together and now called " + self.first_name + " and " + partner.first_name + " " + couple_last_name + ".") #TODO add married status in a person attribute
         return partner
 
     def partnerCompatibilityTest(self, partner):
         compatibility = self.beauty - partner.beauty
         print("Compatibility for " + self.first_name + " " + self.last_name + " and " + partner.first_name + " " + partner.last_name + ": " + str(compatibility))
-        if compatibility <= 0 and compatibility >= -30:
-            return True
-        elif compatibility <= 30:
-            return True
+        if compatibility >= -30 and compatibility <= 30:
+            return True 
         else:
             return False
 
@@ -79,6 +78,6 @@ class person(object):
             other_parent = self 
         world.addEntity(main_parent.last_name) #TODO Add a way to append "Jr." to the kid's first name if they have the as their parent
         kid = world.entities_members[len(world.entities_members)-1]
-        main_parent.family.addMember(kid.id)
+        world.entities_members[main_parent.id].family.addMember(kid.id)
         print(kid.first_name + " is in the " + kid.last_name + " family and " + kid.pronoun[1] + " dad is " + main_parent.first_name + " and " + kid.pronoun[1] + " mom is " + other_parent.first_name + ".")
         main_parent.family.listMembers(world)

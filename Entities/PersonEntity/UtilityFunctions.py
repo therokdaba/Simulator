@@ -5,7 +5,7 @@ def chooseRandomItemInArray(array):
     return array[a]  
 
 def generateRandomIQ():
-    #https://www.iq-brain.com/iq-test-scores/
+    # the information used below comes from: https://www.iq-brain.com/iq-test-scores/
     a = random.random()
     if a <= 0.021:
         return random.randint(0, 70)

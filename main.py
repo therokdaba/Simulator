@@ -3,7 +3,7 @@ from Entities.PersonEntity import UtilityFunctions
 
 if __name__ == "__main__":
     world = Entities.entities()
-    for i in range(6):
+    for i in range(7):
         world.addEntity()
     world.listEntities()
     UtilityFunctions.chooseRandomItemInArray(world.entities_members).reproductionProcess(world)
