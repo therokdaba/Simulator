@@ -23,5 +23,11 @@ def generateRandomIQ():
 def generateRandomStatValue(number):
     return random.randint(0, number)
 
+def generateRandomHealthLevel():
+    a = random.random()
+    if a <=  0.97:
+        return 100
+    else:
+        return random.randint(0, 20)
 # def returnRandomPerson(entity_list):
 #     return entity_list[random.randint(0,len(entity_list)-1)]

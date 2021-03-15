@@ -6,6 +6,8 @@ if __name__ == "__main__":
     for i in range(7):
         world.addEntity()
     world.listEntities()
+    world.newYear()
     UtilityFunctions.chooseRandomItemInArray(world.entities_members).reproductionProcess(world)
+    world.newYear()
     world.listEntities()
     #TODO add more space and clean up the output processf

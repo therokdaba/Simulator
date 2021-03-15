@@ -5,6 +5,7 @@ class family(object):
     #create the family based on the last name
     def addMember(self, id):
         self.members.append(id)
+        return len(self.members) - 1
     #we will only take the characters id that we can pass in later to the world object
     def listMembers(self, world):
         print("Current " + self.last_name + " family member list:")
