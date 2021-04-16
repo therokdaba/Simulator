@@ -21,7 +21,7 @@ class person(object):
         self.iq = UtilityFunctions.generateRandomIQ() #will help determine which innovation a character will choose, the smarter he is the smarter choices he'll makee
         self.beauty = UtilityFunctions.generateRandomStatValue(100) #determines the attractivity of a character and how likely they are to find a partner
         self.leadership = UtilityFunctions.generateRandomStatValue(100) #will help determine who's going to the top and how much the character's vote counts
-        
+        self.single = True
         #Set the pronouns to use throughout the game when describing the characters, the pronoun array will be referencesd throughout the game
         self.pronoun = []
         if self.gender == "male":
@@ -154,7 +154,7 @@ class person(object):
         world.deaths += 1
 
     def chooseCauseOfDeath(self):
-        accidental_causes = [" fell after climbing a tree", " got run over by a truck", "choked on the first bite of a hamburger", "was trapped in " + self.pronoun[1] + " burning house after overcooking pasta", "was knocked over by wind, " + self.pronoun[0] + " fell into a lake"]
+        accidental_causes = [" fell after climbing a tree", " got run over by a truck", " choked on the first bite of a hamburger", " was trapped in " + self.pronoun[1] + " burning house after overcooking pasta", " was knocked over by wind, " + self.pronoun[0] + " fell into a lake, didn't know how to swim", " got into a car crash"]
         medical_causes = ["cancer", "asthma"]
         if self.health_status == self.health_statuses[3]:
             cause = UtilityFunctions.chooseRandomItemInArray(medical_causes)
@@ -164,15 +164,16 @@ class person(object):
             print("Update: " + self.first_name + " " + self.last_name + cause + " and died.")
 
     def reproductionProcess(self, world):#TODO change this to adapt it to couple
-        partner = self.findPartner(world) #TODO move the process of finding a partner to another function
-        if partner != False:
-            self.childCreation(partner, world)
+        if self.health_status != self.health_statuses[0] and not (self.gender == "female" and (self.age_status == self.age_statuses[4] or self.age_status == self.age_statuses[5])) and self.single:
+            partner = self.findPartner(world) #TODO move the process of finding a partner to another function
+            if partner != False:
+                self.childCreation(partner, world)
 
     def findPartner(self, world):#world is passed through to help us access all entities
         partner_list = copy.deepcopy(world.entities_members)
         partner = UtilityFunctions.chooseRandomItemInArray(partner_list)
         partner_list.remove(partner)
-        while (self.gender == partner.gender or not self.partnerCompatibilityTest(partner)) and len(partner_list) > 0: #no need to check that partner is not self because we are making sure that the gender between two partners is different 
+        while (self.gender == partner.gender or not (self.partnerCompatibilityTest(partner)) and len(partner_list) > 0 and not (partner.single)): #no need to check that partner is not self because we are making sure that the gender between two partners is different 
             partner = UtilityFunctions.chooseRandomItemInArray(partner_list)
             partner_list.remove(partner)
         if len(partner_list) <= 0:
